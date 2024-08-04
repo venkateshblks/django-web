@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data Analysis Results</title>
+</head>
+<body>
+    <h1>Data Analysis Results</h1>
+    <h2>First Few Rows</h2>
+    {{ head|safe }}
+    <h2>Summary Statistics</h2>
+    {{ describe|safe }}
+    <h2>Missing Values</h2>
+    {{ missing_values|safe }}
+    <br><br>
+ 
+    <br>
+    <form method="get" action="{% url 'upload_file' %}">
+        <button type="submit">Upload New File</button>
+    </form>
+</body>
+</html>

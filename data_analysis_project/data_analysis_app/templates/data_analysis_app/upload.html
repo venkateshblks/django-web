@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload CSV File</title>
+</head>
+<body>
+    <h1>Upload CSV File</h1>
+    {% if error %}
+    <p style="color: red;">Error: {{ error }}</p>
+{% endif %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
+    </form>
+</body>
+</html>
