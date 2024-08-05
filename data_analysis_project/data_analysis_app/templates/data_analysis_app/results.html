@@ -2,9 +2,14 @@
 <html>
 <head>
     <title>Data Analysis Results</title>
+    <link rel="stylesheet" type="text/css" href="{% templates 'data_analysis_app/styles.css' %}">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,
+                                   initial-scale=1.0" />
+    
 </head>
 <body>
-    <h1>Data Analysis Results</h1>
+    <h1  >Data Analysis Results</h1>
     <h2>First Few Rows</h2>
     {{ head|safe }}
     <h2>Summary Statistics</h2>

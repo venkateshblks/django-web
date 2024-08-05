@@ -6,6 +6,8 @@ import seaborn as sns
 import io
 import urllib, base64
 from django.http import HttpResponse
+from bs4 import BeautifulSoup
+from django.core.paginator import Paginator
 
 def handle_uploaded_file(file):
     try:
@@ -89,10 +91,43 @@ def view_data(request):
     if df_json:
         df= pd.read_json(df_json)
         # print(df.type)
+        df_html = df.head().to_html()
+        soup = BeautifulSoup(df_html, 'html.parser')
+        table = soup.find('table')
+        table['class'] += ' border-collapse border border-gray-400'
+        for th in soup.find_all('th'):
+            th['class'] = 'h-full w-full bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100 px-4 py-2 border border-gray-300'
+        for td in soup.find_all('td'):
+            td['class'] = 'backdrop-blur-3xl bg-white/30 px-4 py-2 border border-gray-300'
+        df_html1 = str(soup)
+
+        des = df.describe().to_html()
+        soup = BeautifulSoup(des, 'html.parser')
+        table = soup.find('table')
+        table['class'] += ' border-collapse border border-gray-400'
+        for th in soup.find_all('th'):
+            th['class'] = 'h-full w-full bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100 px-4 py-2 border border-gray-300'
+        for td in soup.find_all('td'):
+            td['class'] = 'backdrop-blur-3xl bg-white/30 px-4 py-2 border border-gray-300'
+        des = str(soup)
+
+        miss = df.isnull().sum().to_frame('missing').to_html()
+        soup = BeautifulSoup(miss, 'html.parser')
+        table = soup.find('table')
+        table['class'] += ' border-collapse border border-gray-400'
+        for th in soup.find_all('th'):
+            th['class'] = 'h-full w-full bg-gray-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-30 border border-gray-100 px-4 py-2 border border-gray-300'
+        for td in soup.find_all('td'):
+            td['class'] = 'backdrop-blur-3xl bg-white/30 px-4 py-2 border border-gray-300'
+        miss = str(soup)
+        # ..........................
+
+        # ...............................
         data = {
-                'head': df.head().to_html(),
-                'describe': df.describe().to_html(),
-                'missing_values': df.isnull().sum().to_frame('missing').to_html(),
+
+                'head': df_html1,
+                'describe': des,
+                'missing_values': miss,
              
             }
         return render(request, 'data_analysis_app/data.html', data,)
