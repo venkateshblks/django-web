@@ -3,3 +3,4 @@ matplotlib
 seaborn
 pandas
 django
+beautifulsoup4
