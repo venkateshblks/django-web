@@ -2,16 +2,37 @@
 <html>
 <head>
     <title>Upload CSV File</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        clifford: "#da373d",
+                    },
+                },
+            },
+        }
+    </script>
 </head>
-<body>
-    <h1>Upload CSV File</h1>
+<body >
+    <div>
+<br><br>    <h1 class="text-center mb-4 text-4xl font-bold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl text-black">Upload CSV or Excel File</h1>
+
+
+    <!-- <h1>Upload CSV File</h1> -->
+    <div class="flex items-center justify-center min-h-screen bg-gray-100 container mx-auto my-8 p-4">
     {% if error %}
     <p style="color: red;">Error: {{ error }}</p>
 {% endif %}
-    <form method="post" enctype="multipart/form-data">
+    
+    <form method="post" enctype="multipart/form-data" class="flex flex-col items-center bg-white shadow-md rounded px-8 pt-6 pb-8">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Upload</button>
-    </form>
+        <div class="block w-full text-xl text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 text-white font-bold focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400" id="file_input>{{ form.as_p }}</div>
+       <br><br> <button type="submit" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 shadow-lg shadow-blue-500/50 dark:shadow-lg dark:shadow-blue-800/80 font-bold tracking-wide rounded-lg text-sm px-7 py-2.5 text-center me-2 mb-2">Upload</button>
+        <!-- <button type="submit">Upload</button> -->
+    </form></div></div>
 </body>
 </html>

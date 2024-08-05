@@ -22,19 +22,19 @@ def handle_uploaded_file(file):
     # Generate plots
     def generate_plot(data,column, plot_type):
         plt.figure(figsize=(10, 6))
-        if plot_type == 'hist':
+        if plot_type == 'Histogram':
             sns.histplot(data[column], kde=True)
-            plt.title('Histograms for Numerical Columns')
+            plt.title('Histograms ')
         elif plot_type == 'scatter':
             if len(data.columns) >= 2:
                 sns.scatterplot(x=data.iloc[:, 2], y=data.iloc[:, 1])
                 plt.title('Scatter Plot')
             else:
                 return None
-        elif plot_type == 'box':
+        elif plot_type == 'Box plot':
             sns.boxplot(y=data[column])
             plt.title('Box Plot')
-        elif plot_type == 'line':
+        elif plot_type == 'Line Plot':
             sns.lineplot(data=data[column])
             plt.title('Line Plot')
         plt.tight_layout()
@@ -46,20 +46,13 @@ def handle_uploaded_file(file):
         string = base64.b64encode(buf.read())
         return urllib.parse.quote(string)
 
-    # Generate plots
-    # plot_uris = {
-    #     'hist': generate_plot(df.select_dtypes(include=['number']), 'hist'),
-    #     'scatter': generate_plot(df.select_dtypes(include=['number']), 'scatter'), #if len(df.columns) >= 2 else None,
-    #     'box': generate_plot(df.select_dtypes(include=['number']), 'box'),
-    #     'line': generate_plot(df.select_dtypes(include=['number']), 'line')
-    # }
     plot_uris = {}
     numerical_columns = df.select_dtypes(include=['number']).columns
     for column in numerical_columns:
         plot_uris[column] = {
-            'hist': generate_plot(df, column, 'hist'),
-            'box': generate_plot(df, column, 'box'),
-            'line': generate_plot(df, column, 'line')
+            'Histogram': generate_plot(df, column, 'Histogram'),
+            'Box plot': generate_plot(df, column, 'Box plot'),
+            'Line Plot': generate_plot(df, column, 'Line Plot')
         }
     
     return df, plot_uris
@@ -152,13 +145,13 @@ def visualize_data(request):
     df= pd.read_json(d)
     col=df.columns[1]
     # print(df.columns[2])
-    plot_type = request.GET.get('plot_type', 'hist')  # Default to 'hist' if no type is provided
-    column = request.GET.get('column',col)  # Default to 'hist' if no type is provided
+    plot_type = request.GET.get('plot_type', 'Histogram')  
+    column = request.GET.get('column',col)  
     plot_uris = request.session.get('plot_uri', None)
     # print(column)
     if plot_uris and column in plot_uris and plot_type in plot_uris[column]:
         plot_uri = plot_uris[column][plot_type]
         # print(plot_uri)
-        return render(request, 'data_analysis_app/visualize.html', { 'plot_uri': plot_uri, 'plot_type': plot_type,'column':column,'columns': plot_uris.keys() ,'plot_types': ['hist', 'box', 'line'] })
+        return render(request, 'data_analysis_app/visualize.html', { 'plot_uri': plot_uri, 'plot_type': plot_type,'column':column,'columns': plot_uris.keys() ,'plot_types': ['Histogram', 'Box plot', 'Line Plot'] })
     
     return redirect('visualize_data')
